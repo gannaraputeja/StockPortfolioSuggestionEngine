@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  background-image: url('../public/stock1.jpg');
+  background-size: 100% 100%;
+  height: 100vh;
 }
 
 .App-logo {
@@ -11,6 +14,13 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+.heading {
+  background-color: rgba(244, 147, 27, 0.653);
+}
+.h1 {
+  width: 50%;
 }
 
 .App-header {

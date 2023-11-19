@@ -1,0 +1,68 @@
+.confirmation-page {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.5%;
+  background-color: #e5e7e8;
+  padding: 10px;
+  border-radius: 2px;
+  width: 89%;
+  margin-left: 0.1%;
+}
+
+.selected-details {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  padding: 4px;
+  border-radius: 2px;
+}
+
+.selected-details h2 {
+  text-align: left;
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.selected-details h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.selected-details p {
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+
+.selected-details hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+.buttons {
+  display: flex;
+  margin-top: 5%;
+}
+
+.back-button {
+  width: 10%;
+  border: 1px solid #000;
+  border-radius: 2px;
+  background-color: #fff;
+  color: #000;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: auto;
+}
+
+.submit-button {
+  width: 10%;
+  border: 1px solid #000;
+  border-radius: 2px;
+  background-color: #fff;
+  color: #000;
+  font-size: 16px;
+  cursor: pointer;
+  margin-left: auto;
+}
