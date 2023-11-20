@@ -1,13 +1,15 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Set environment variables
-Add below snippet to your .env file at project root folder.
+# Set environment variables
+Add below snippet to your .env.local file at project root folder.
 `
 REACT_APP_BACKEND_API_URL=http://127.0.0.1:8000
 REACT_APP_STOCK_API_KEY=your_iex_cloud_api_key
 `
+
+
+# Getting Started with Create React App
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
