@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-function ShowTrends() {
+function Trends() {
   useEffect(() => {
     const script = document.createElement('script');
     script.src =
@@ -165,4 +165,4 @@ function ShowTrends() {
   );
 }
 
-export default ShowTrends;
+export default Trends;

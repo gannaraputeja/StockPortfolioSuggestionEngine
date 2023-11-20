@@ -26,7 +26,7 @@ function ThirdPage() {
     }
   }, [location.state.stratergies]);
 
-  const getData = async () => {
+  const getSuggestions = async () => {
     setIsLoading(true);
     let postBody = {};
     postBody.Amount = parseInt(location.state.investValue2);
@@ -108,7 +108,7 @@ function ThirdPage() {
                 <Button
                   variant="outlined"
                   sx={{ width: '10%', marginLeft: '80%' }}
-                  onClick={getData}
+                  onClick={getSuggestions}
                 >
                   Submit
                 </Button>
