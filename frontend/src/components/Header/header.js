@@ -10,9 +10,9 @@ export default function(props) {
             <div className="wrap">
                 <header className="logo">
                     <h1 className="logo-title">
-                        <a href="#" className="logo-link">
+                        <NavLink to="" className="logo-link">
                             Invest Wise
-                        </a>
+                        </NavLink>
                     </h1>
                 </header>
                 <nav className="menu">
