@@ -1,8 +1,11 @@
 import os
 import requests
 import json
+import logging
 from flask import Flask, request, Response
 from flask_cors import CORS, cross_origin
+
+logger = logging.getLogger(__name__)
 
 # URL for stock API IEX Cloud
 STOCK_API_URL = os.getenv('STOCK_API_URL')
@@ -61,9 +64,9 @@ def return_data():
     responseAmount.append(amt3)
 
     stock_result_pieChart = []
-    print(Strategies)
+    logger.info("Strategies: %s", Strategies)
     for strategy in Strategies:
-        print(strategy)
+        logger.info("Strategy: %s", strategy)
         if strategy == "Ethical Investing":
             strategiesResponse["Ethical Investing"] = get_stock_quote(strategy_ethical_investing)
             stock_result_pieChart.append({"title": strategy_ethical_investing[0], "value": amt1})
@@ -93,6 +96,7 @@ def return_data():
     response_details = {"strategiesResponse": strategiesResponse, "amountResponse": responseAmount,
                         "piechartResponse": stock_result_pieChart}
     response = Response(json.dumps(response_details), mimetype='application/json')
+    logger.info("Response: %s", response)
     return response
 
 
