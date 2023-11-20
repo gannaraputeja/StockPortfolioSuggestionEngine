@@ -128,60 +128,61 @@ function ResultsPage() {
                     >
                       {strategy}
                     </Typography>
+                    <Box
+                        display="flex"
+                        flexDirection="row"
+                        marginBottom={2}
+                        sx={{ p: 2 }}
+                        flexWrap="wrap"
+                    >
                     {strategyResponse && strategyResponse.map((record) =>
-                        <Box
-                            display="flex"
-                            flexDirection="column"
-                            marginBottom={2}
-                            sx={{ p: 2 }}
-                        >
-                          {record && record.map(item =>
-                              <Card
-                                  sx={{
-                                    width: '30%',
-                                    backgroundColor:
-                                        item.change < 0 ? '#F44336' : '#2ECC71',
-                                  }}
+                        record && record.map(item =>
+                            <Card
+                                sx={{
+                                  width: '30%',
+                                  backgroundColor:
+                                      item.change < 0 ? '#F44336' : '#2ECC71',
+                                  marginLeft: 2,
+                                }}
+                            >
+                              <CardActionArea
+                                  onClick={() =>
+                                      getWeekly(item.symbol, item.companyName)
+                                  }
                               >
-                                <CardActionArea
-                                    onClick={() =>
-                                        getWeekly(item.symbol, item.companyName)
-                                    }
-                                >
-                                  <CardContent>
-                                    <Box
-                                        display="flex"
-                                        justifyContent="space-between"
-                                        marginBottom={1}
-                                    >
-                                      <Typography variant="h5">
-                                        {item.companyName}
-                                      </Typography>
-                                      <Typography>{item.symbol}</Typography>
-                                    </Box>
-                                    <Typography textAlign="left">
-                                      Latest Price: {item.latestPrice}
+                                <CardContent>
+                                  <Box
+                                      display="flex"
+                                      justifyContent="space-between"
+                                      marginBottom={1}
+                                  >
+                                    <Typography variant="h5">
+                                      {item.companyName}
                                     </Typography>
-                                    <Typography textAlign="left">
-                                      Change: {item.change}
-                                    </Typography>
-                                    <Typography textAlign="left">
-                                      Change Percent: {item.changePercent}
-                                    </Typography>
-                                    <Typography
-                                        textAlign="right"
-                                        sx={{ fontSize: '12px' }}
-                                    >
-                                      {item.latestTime}
-                                    </Typography>
-                                  </CardContent>
-                                </CardActionArea>
-                              </Card>
-
-                          )}
-                        </Box>
+                                    <Typography>{item.symbol}</Typography>
+                                  </Box>
+                                  <Typography textAlign="left">
+                                    Latest Price: {item.latestPrice}
+                                  </Typography>
+                                  <Typography textAlign="left">
+                                    Change: {item.change}
+                                  </Typography>
+                                  <Typography textAlign="left">
+                                    Change Percent: {item.changePercent}
+                                  </Typography>
+                                  <Typography
+                                      textAlign="right"
+                                      sx={{ fontSize: '12px' }}
+                                  >
+                                    {item.latestTime}
+                                  </Typography>
+                                </CardContent>
+                              </CardActionArea>
+                            </Card>
+                          )
                       )}
-                </Box>
+                    </Box>
+                  </Box>
               ))
           }
         </Box>
