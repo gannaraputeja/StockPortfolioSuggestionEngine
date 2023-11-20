@@ -11,41 +11,43 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
+import {fetchSuggestions} from "../../api/api";
 
-function ThirdPage() {
+function ConfirmationPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [stratergies, setStratergies] = useState(location.state.stratergies);
+  const [strategies, setStrategies] = useState(location.state.strategies);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (location.state.stratergies.length > 1) {
-      setStratergies(
-        location.state.stratergies[0] + ' & ' + location.state.stratergies[1]
+    if (location.state.strategies.length > 1) {
+      setStrategies(
+        location.state.strategies[0] + ' & ' + location.state.strategies[1]
       );
     }
-  }, [location.state.stratergies]);
+  }, [location.state.strategies]);
 
   const getSuggestions = async () => {
     setIsLoading(true);
     let postBody = {};
     postBody.Amount = parseInt(location.state.investValue2);
     postBody.Strategies = [];
-    if (location.state.stratergies.length === 2) {
-      postBody.Strategies = [...location.state.stratergies];
+    if (location.state.strategies.length === 2) {
+      postBody.Strategies = [...location.state.strategies];
     } else {
-      postBody.Strategies = location.state.stratergies;
+      postBody.Strategies = location.state.strategies;
     }
 
-    let response = await axios.post(`http://127.0.0.1:8000/suggestions`, postBody);
+    // let response = await axios.post(`http://127.0.0.1:8000/suggestions`, postBody);
+    let response = fetchSuggestions(postBody);
     setTimeout(() => {
       setIsLoading(false);
     }, 3000);
 
-    navigate('/result', {
+    navigate('/results', {
       state: {
         respData: response.data,
-        stratergies: location.state.stratergies,
+        strategies: location.state.strategies,
       },
     });
   };
@@ -86,7 +88,7 @@ function ThirdPage() {
                     Investment Amount: {location.state.investValue2} $
                   </Typography>
                   <Divider sx={{ my: 2 }} />
-                  <Typography>Investing Strategies: {stratergies}</Typography>
+                  <Typography>Investing Strategies: {strategies}</Typography>
                 </CardContent>
               </Card>
 
@@ -95,10 +97,10 @@ function ThirdPage() {
                   sx={{ width: '10%' }}
                   variant="outlined"
                   onClick={() =>
-                    navigate('/second', {
+                    navigate('/strategies', {
                       state: {
                         investValue: location.state.investValue2,
-                        investing: location.state.stratergies,
+                        investing: location.state.strategies,
                       },
                     })
                   }
@@ -121,4 +123,4 @@ function ThirdPage() {
   );
 }
 
-export default ThirdPage;
+export default ConfirmationPage;

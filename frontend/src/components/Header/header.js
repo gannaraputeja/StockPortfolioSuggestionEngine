@@ -31,9 +31,9 @@ export default function(props) {
                         menu={
                             <ul className="menu-list">
                                 <li className="menu-item is-active menu-item--play">
-                                    <a href="#" className="menu-link">
+                                    <NavLink to="" className="menu-link">
                                         Home
-                                    </a>
+                                    </NavLink>
                                 </li>
                                 <li className="menu-item is-active menu-item--play">
                                     <NavLink to='trends' className="menu-link">

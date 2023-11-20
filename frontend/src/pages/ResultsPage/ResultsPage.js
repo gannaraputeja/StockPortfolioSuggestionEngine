@@ -22,7 +22,7 @@ import {
   Label,
 } from 'recharts';
 
-function Result() {
+function ResultsPage() {
   const location = useLocation();
   const [responseData, setResponseData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -126,7 +126,7 @@ function Result() {
                   marginTop="1%"
                   color="white"
                 >
-                  {location.state.stratergies[index]}
+                  {location.state.strategies[index]}
                 </Typography>
                 <Box
                   display="flex"
@@ -242,4 +242,4 @@ function Result() {
   );
 }
 
-export default Result;
+export default ResultsPage;

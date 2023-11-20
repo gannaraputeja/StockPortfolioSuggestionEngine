@@ -8,7 +8,7 @@ import {
 import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function FirstPage() {
+function InvestmentPage() {
   const navigate = useNavigate();
 
   const [fieldError, setFieldError] = useState(false);
@@ -20,7 +20,7 @@ function FirstPage() {
   const sendValue = () => {
     if (valueRef.current.value >= 5000) {
       setDefValue(valueRef.current.value);
-      navigate('/second', { state: { investValue: valueRef.current.value } });
+      navigate('/strategies', { state: { investValue: valueRef.current.value } });
     } else {
       setFieldError(true);
       setHelperText('Incorrect Amount ');
@@ -58,7 +58,7 @@ function FirstPage() {
             }}
           />
           <Typography sx={{ textAlign: 'left' }}>
-            Amount should be greater than $5000
+            Min. Amount - $5000
           </Typography>
 
           <Button
@@ -74,4 +74,4 @@ function FirstPage() {
   );
 }
 
-export default FirstPage;
+export default InvestmentPage;

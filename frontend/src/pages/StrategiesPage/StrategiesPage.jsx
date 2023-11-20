@@ -14,7 +14,7 @@ import {
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-function SecondPage() {
+function StrategiesPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const MenuProps = {
@@ -50,15 +50,15 @@ function SecondPage() {
   const sendValue = () => {
     if (investing.length === 0) {
       setFieldError(true);
-      setHelperText('please select the stratergies');
+      setHelperText('please select the strategies');
     } else if (investing.length > 2) {
       setFieldError(true);
       setHelperText('maximum of 2 Investment strategies can be selected');
     } else {
-      navigate('/third', {
+      navigate('/confirm', {
         state: {
           investValue2: location.state.investValue,
-          stratergies: investing,
+          strategies: investing,
         },
       });
     }
@@ -77,17 +77,17 @@ function SecondPage() {
       >
         <Box backgroundColor="white" p={4} borderRadius={4}>
           <Typography sx={{ textAlign: 'left', marginBottom: '3%' }}>
-            Step 2: Select Stratergies
+            Step 2: Select Strategies
           </Typography>
           <FormControl sx={{ width: 500, marginRight: '85%' }}>
             <InputLabel id="demo-multiple-checkbox-label">
-              Investing Stratergies
+              Investing Strategies
             </InputLabel>
             <Select
               multiple
               value={investing}
               onChange={handleChange}
-              input={<OutlinedInput label="Investing Stratergies" />}
+              input={<OutlinedInput label="Investing Strategies" />}
               renderValue={(selected) => selected.join(', ')}
               MenuProps={MenuProps}
               error={fieldError}
@@ -131,4 +131,4 @@ function SecondPage() {
   );
 }
 
-export default SecondPage;
+export default StrategiesPage;
