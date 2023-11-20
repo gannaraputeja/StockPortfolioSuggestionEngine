@@ -11,7 +11,7 @@ function Trends() {
       dateRange: '12M',
       showChart: true,
       locale: 'en',
-      width: '1315',
+      width: '100%',
       height: '500',
       largeChartUrl: '',
       isTransparent: false,
