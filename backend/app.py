@@ -4,6 +4,9 @@ import json
 from flask import Flask, request, Response
 from flask_cors import CORS, cross_origin
 
+# API KEY for IEX Cloud
+API_KEY = os.getenv('API_KEY')
+
 app = Flask(__name__)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -22,14 +25,14 @@ strategy_quality_investing = ["NVDA", "MU", "CSCO"]
 strategy_value_investing = ["INTC", "BABA", "GE"]
 
 
-def get_stock_quote(stock_list):
+def get_stock_quote(ticker_list):
     """Function that calls stock API for each stock to fetch stock details"""
-    get_data = '?token=pk_31638584dd6c4c04a550a33b66e50c33&filter=symbol,companyName,latestPrice,latestTime,change,changePercent'
+    query_params = 'symbol,companyName,latestPrice,latestTime,change,changePercent'
     stock_details = []
-    for ticker in stock_list:
-        resp = requests.get('https://cloud.iexapis.com/v1/stock/{}/quote/{}'.format(ticker, get_data))
+    for ticker in ticker_list:
+        url = 'https://api.iex.cloud/v1/data/core/quote/{}?token={}&filter={}'.format(ticker, API_KEY, query_params)
+        resp = requests.get(url)
         stock_details.append(resp.json())
-
     return stock_details
 
 
