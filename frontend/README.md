@@ -5,8 +5,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Set environment variables
 Add below snippet to your .env file at project root folder.
 `
-BACKEND_API_URL=http://127.0.0.1:8000
-STOCK_API_KEY=your_iex_cloud_api_key
+REACT_APP_BACKEND_API_URL=http://127.0.0.1:8000
+REACT_APP_STOCK_API_KEY=your_iex_cloud_api_key
 `
 
 ## Available Scripts

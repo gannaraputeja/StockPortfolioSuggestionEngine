@@ -140,7 +140,7 @@ function ResultsPage() {
                                   sx={{
                                     width: '30%',
                                     backgroundColor:
-                                        item.change < 0 ? '#FE2929' : '#69C74B',
+                                        item.change < 0 ? '#F44336' : '#2ECC71',
                                   }}
                               >
                                 <CardActionArea
