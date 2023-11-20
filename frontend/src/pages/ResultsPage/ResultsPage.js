@@ -7,7 +7,6 @@ import {
   Modal,
   Typography,
 } from '@mui/material';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
@@ -21,6 +20,7 @@ import {
   Tooltip,
   Label,
 } from 'recharts';
+import {fetchCharts} from "../../api/api";
 
 function ResultsPage() {
   const location = useLocation();
@@ -31,9 +31,10 @@ function ResultsPage() {
   const [companyName, setCompanyName] = useState();
 
   const getWeekly = async (symbol, company) => {
-    let response = await axios.get(
-      `https://cloud.iexapis.com/v1/stock/${symbol}/chart/1m?token=pk_31638584dd6c4c04a550a33b66e50c33`
-    );
+    // let response = await axios.get(
+    //   `https://cloud.iexapis.com/v1/stock/${symbol}/chart/1m?token=pk_31638584dd6c4c04a550a33b66e50c33`
+    // );
+    let response = await fetchCharts(symbol);
     setOpen(true);
     setLineData(response.data);
     setCompanyName(company + ' (' + symbol + ')');
@@ -53,7 +54,7 @@ function ResultsPage() {
       setResponseData(location.state.respData);
     };
     fetchData();
-  }, []);
+  }, [location]);
 
   return (
     <>
@@ -113,73 +114,76 @@ function ResultsPage() {
           </Box>
         </Modal>
         <Box>
-          {responseData &&
-            responseData.strategiesResponse &&
-            responseData.strategiesResponse.map((item, index) => (
-              <Box display="flex" flexDirection="column" marginTop={4}>
-                <Typography
-                  textAlign="left"
-                  marginLeft="3%"
-                  fontSize={20}
-                  marginBottom={0.5}
-                  fontWeight="bold"
-                  marginTop="1%"
-                  color="white"
+          {responseData?.strategiesResponse && Object.entries(responseData.strategiesResponse).map(([strategy, strategyResponse]) =>
+              (<Box
+                  display="flex" flexDirection="column" marginTop={4}
                 >
-                  {location.state.strategies[index]}
-                </Typography>
-                <Box
-                  display="flex"
-                  marginBottom={2}
-                  justifyContent="space-evenly"
-                  sx={{ p: 2 }}
-                >
-                  {item.map((item1, index1) => (
-                    <Card
-                      sx={{
-                        width: '30%',
-                        backgroundColor:
-                          item1.change < 0 ? '#FE2929' : '#69C74B',
-                      }}
+                    <Typography
+                        textAlign="left"
+                        marginLeft="3%"
+                        fontSize={20}
+                        marginBottom={0.5}
+                        fontWeight="bold"
+                        marginTop="1%"
                     >
-                      <CardActionArea
-                        onClick={() =>
-                          getWeekly(item1.symbol, item1.companyName)
-                        }
-                      >
-                        <CardContent>
-                          <Box
+                      {strategy}
+                    </Typography>
+                    {strategyResponse && strategyResponse.map((record) =>
+                        <Box
                             display="flex"
-                            justifyContent="space-between"
-                            marginBottom={1}
-                          >
-                            <Typography variant="h5">
-                              {item1.companyName}
-                            </Typography>
-                            <Typography>{item1.symbol}</Typography>
-                          </Box>
-                          <Typography textAlign="left">
-                            Latest Price: {item1.latestPrice}
-                          </Typography>
-                          <Typography textAlign="left">
-                            Change: {item1.change}
-                          </Typography>
-                          <Typography textAlign="left">
-                            Change Percent: {item1.changePercent}
-                          </Typography>
-                          <Typography
-                            textAlign="right"
-                            sx={{ fontSize: '12px' }}
-                          >
-                            {item1.latestTime}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  ))}
+                            flexDirection="column"
+                            marginBottom={2}
+                            sx={{ p: 2 }}
+                        >
+                          {record && record.map(item =>
+                              <Card
+                                  sx={{
+                                    width: '30%',
+                                    backgroundColor:
+                                        item.change < 0 ? '#FE2929' : '#69C74B',
+                                  }}
+                              >
+                                <CardActionArea
+                                    onClick={() =>
+                                        getWeekly(item.symbol, item.companyName)
+                                    }
+                                >
+                                  <CardContent>
+                                    <Box
+                                        display="flex"
+                                        justifyContent="space-between"
+                                        marginBottom={1}
+                                    >
+                                      <Typography variant="h5">
+                                        {item.companyName}
+                                      </Typography>
+                                      <Typography>{item.symbol}</Typography>
+                                    </Box>
+                                    <Typography textAlign="left">
+                                      Latest Price: {item.latestPrice}
+                                    </Typography>
+                                    <Typography textAlign="left">
+                                      Change: {item.change}
+                                    </Typography>
+                                    <Typography textAlign="left">
+                                      Change Percent: {item.changePercent}
+                                    </Typography>
+                                    <Typography
+                                        textAlign="right"
+                                        sx={{ fontSize: '12px' }}
+                                    >
+                                      {item.latestTime}
+                                    </Typography>
+                                  </CardContent>
+                                </CardActionArea>
+                              </Card>
+
+                          )}
+                        </Box>
+                      )}
                 </Box>
-              </Box>
-            ))}
+              ))
+          }
         </Box>
         <Typography
           textAlign="left"
@@ -187,7 +191,6 @@ function ResultsPage() {
           fontSize={20}
           marginBottom={0.5}
           fontWeight="bold"
-          color="white"
         >
           Pie Chart
         </Typography>

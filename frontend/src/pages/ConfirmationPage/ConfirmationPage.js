@@ -8,7 +8,6 @@ import {
   Typography,
 } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { BeatLoader } from 'react-spinners';
 import {fetchSuggestions} from "../../api/api";
@@ -38,8 +37,7 @@ function ConfirmationPage() {
       postBody.Strategies = location.state.strategies;
     }
 
-    // let response = await axios.post(`http://127.0.0.1:8000/suggestions`, postBody);
-    let response = fetchSuggestions(postBody);
+    let response = await fetchSuggestions(postBody);
     setTimeout(() => {
       setIsLoading(false);
     }, 3000);

@@ -4,8 +4,10 @@ import json
 from flask import Flask, request, Response
 from flask_cors import CORS, cross_origin
 
+# URL for stock API IEX Cloud
+STOCK_API_URL = os.getenv('STOCK_API_URL')
 # API KEY for IEX Cloud
-API_KEY = os.getenv('API_KEY')
+STOCK_API_KEY = os.getenv('STOCK_API_KEY')
 
 app = Flask(__name__)
 CORS(app)
@@ -27,10 +29,10 @@ strategy_value_investing = ["INTC", "BABA", "GE"]
 
 def get_stock_quote(ticker_list):
     """Function that calls stock API for each stock to fetch stock details"""
-    query_params = 'symbol,companyName,latestPrice,latestTime,change,changePercent'
+    filter_keys = 'symbol,companyName,latestPrice,latestTime,change,changePercent'
     stock_details = []
     for ticker in ticker_list:
-        url = 'https://api.iex.cloud/v1/data/core/quote/{}?token={}&filter={}'.format(ticker, API_KEY, query_params)
+        url = STOCK_API_URL + '/v1/data/core/quote/{}?token={}&filter={}'.format(ticker, STOCK_API_KEY, filter_keys)
         resp = requests.get(url)
         stock_details.append(resp.json())
     return stock_details
@@ -48,7 +50,7 @@ def return_data():
     Strategies = request.json['Strategies']
     Amount = request.json['Amount']
 
-    response = []
+    strategiesResponse = {}
     amt1 = Amount * 0.5
     amt2 = Amount * 0.30
     amt3 = Amount * 0.20
@@ -60,37 +62,35 @@ def return_data():
 
     stock_result_pieChart = []
     print(Strategies)
-    for x in Strategies:
-        print(x)
-        if x == "Ethical Investing":
-            response.append(get_stock_quote(strategy_ethical_investing))
+    for strategy in Strategies:
+        print(strategy)
+        if strategy == "Ethical Investing":
+            strategiesResponse["Ethical Investing"] = get_stock_quote(strategy_ethical_investing)
             stock_result_pieChart.append({"title": strategy_ethical_investing[0], "value": amt1})
             stock_result_pieChart.append({"title": strategy_ethical_investing[1], "value": amt2})
             stock_result_pieChart.append({"title": strategy_ethical_investing[2], "value": amt3})
-        elif x == "Quality Investing":
-            response.append(get_stock_quote(strategy_quality_investing))
+        elif strategy == "Quality Investing":
+            strategiesResponse["Quality Investing"] = get_stock_quote(strategy_quality_investing)
             stock_result_pieChart.append({"title": strategy_quality_investing[0], "value": amt1})
             stock_result_pieChart.append({"title": strategy_quality_investing[1], "value": amt2})
             stock_result_pieChart.append({"title": strategy_quality_investing[2], "value": amt3})
-        elif x == "Index Investing":
-            response.append(get_stock_quote(strategy_index_investing))
+        elif strategy == "Index Investing":
+            strategiesResponse["Index Investing"] = get_stock_quote(strategy_index_investing)
             stock_result_pieChart.append({"title": strategy_index_investing[0], "value": amt1})
             stock_result_pieChart.append({"title": strategy_index_investing[1], "value": amt2})
             stock_result_pieChart.append({"title": strategy_index_investing[2], "value": amt3})
-        elif x == "Value Investing":
-            response.append(get_stock_quote(strategy_value_investing))
+        elif strategy == "Value Investing":
+            strategiesResponse["Value Investing"] = get_stock_quote(strategy_value_investing)
             stock_result_pieChart.append({"title": strategy_value_investing[0], "value": amt1})
             stock_result_pieChart.append({"title": strategy_value_investing[1], "value": amt2})
             stock_result_pieChart.append({"title": strategy_value_investing[2], "value": amt3})
-        elif x == "Growth Investing":
-            response.append(get_stock_quote(strategy_growth_investing))
+        elif strategy == "Growth Investing":
+            strategiesResponse["Growth Investing"] = get_stock_quote(strategy_growth_investing)
             stock_result_pieChart.append({"title": strategy_growth_investing[0], "value": amt1})
             stock_result_pieChart.append({"title": strategy_growth_investing[1], "value": amt2})
             stock_result_pieChart.append({"title": strategy_growth_investing[2], "value": amt3})
-        else:
-            response.append("Invalid Strategy")
 
-    response_details = {"strategiesResponse": response, "amountResponse": responseAmount,
+    response_details = {"strategiesResponse": strategiesResponse, "amountResponse": responseAmount,
                         "piechartResponse": stock_result_pieChart}
     response = Response(json.dumps(response_details), mimetype='application/json')
     return response
