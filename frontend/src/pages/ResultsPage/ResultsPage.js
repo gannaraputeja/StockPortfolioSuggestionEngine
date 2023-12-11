@@ -30,7 +30,7 @@ function ResultsPage() {
   const [lineData, setLineData] = useState();
   const [companyName, setCompanyName] = useState();
 
-  const getWeekly = async (symbol, company) => {
+  const getCharts = async (symbol, company) => {
     let response = await fetchCharts(symbol);
     if (response && response?.data?.length === 0) {
       alert('No data available for this company');
@@ -142,13 +142,14 @@ function ResultsPage() {
                                 sx={{
                                   width: '30%',
                                   backgroundColor:
-                                      item.change < 0 ? '#F44336' : '#2ECC71',
+                                      item.change < 0 ? '#FF0000' : '#008000',
                                   marginLeft: 2,
+                                  color: 'white',
                                 }}
                             >
                               <CardActionArea
                                   onClick={() =>
-                                      getWeekly(item.symbol, item.companyName)
+                                      getCharts(item.symbol, item.companyName)
                                   }
                               >
                                 <CardContent>

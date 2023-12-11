@@ -3,8 +3,15 @@
 Add below snippet to your .env.local file at project root folder.
 `
 REACT_APP_BACKEND_API_URL=http://127.0.0.1:8000
-REACT_APP_STOCK_API_KEY=your_iex_cloud_api_key
 `
+
+# Run UI Project
+`yarn start`
+
+or
+
+`npm start`
+
 
 
 # Getting Started with Create React App
