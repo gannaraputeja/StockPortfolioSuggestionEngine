@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import InvestmentPage from './pages/InvestmentPage/InvestmentPage';
 import StrategiesPage from './pages/StrategiesPage/StrategiesPage';
 import ConfirmationPage from './pages/ConfirmationPage/ConfirmationPage';

@@ -2,7 +2,7 @@ import React from "react";
 import ResponsiveMenu from "react-responsive-navbar";
 import { Close } from "styled-icons/material/Close";
 import { Menu } from "styled-icons/material/Menu";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 export default function(props) {
     return (

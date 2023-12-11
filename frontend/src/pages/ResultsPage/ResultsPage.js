@@ -31,10 +31,11 @@ function ResultsPage() {
   const [companyName, setCompanyName] = useState();
 
   const getWeekly = async (symbol, company) => {
-    // let response = await axios.get(
-    //   `https://cloud.iexapis.com/v1/stock/${symbol}/chart/1m?token=pk_31638584dd6c4c04a550a33b66e50c33`
-    // );
     let response = await fetchCharts(symbol);
+    if (response && response?.data?.length === 0) {
+      alert('No data available for this company');
+      return;
+    }
     setOpen(true);
     setLineData(response.data);
     setCompanyName(company + ' (' + symbol + ')');

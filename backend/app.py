@@ -23,21 +23,30 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 # 1st stock gets 50% of amount to be invested
 # 2nd stock gets 30% of amount to be invested
 # 3rd stock gets 20% of amount to be invested
-strategy_ethical_investing = ["AAPL", "TSLA", "ADBE"]
-strategy_growth_investing = ["OXLC", "ECC", "AMD"]
-strategy_index_investing = ["VOO", "VTI", "ILTB"]
-strategy_quality_investing = ["NVDA", "MU", "CSCO"]
-strategy_value_investing = ["INTC", "BABA", "GE"]
+investment_strategies = {
+    "Ethical Investing": ["AAPL", "TSLA", "ADBE"],
+    "Quality Investing": ["NVDA", "MU", "CSCO"],
+    "Index Investing": ["VOO", "VTI", "ILTB"],
+    "Value Investing": ["INTC", "BABA", "GE"],
+    "Growth Investing": ["OXLC", "ECC", "AMD"],
+}
 
 
 def get_stock_quote(ticker_list):
-    """Function that calls stock API for each stock to fetch stock details"""
-    filter_keys = 'symbol,companyName,latestPrice,latestTime,change,changePercent'
+    """
+        Fetches stock details for each ticker using the stock API.
+    """
+    url_base = f"{STOCK_API_URL}/v1/data/core/quote"
+    filter_keys = "symbol,companyName,latestPrice,latestTime,change,changePercent"
+
     stock_details = []
     for ticker in ticker_list:
-        url = STOCK_API_URL + '/v1/data/core/quote/{}?token={}&filter={}'.format(ticker, STOCK_API_KEY, filter_keys)
-        resp = requests.get(url)
-        stock_details.append(resp.json())
+        url = f"{url_base}/{ticker}?token={STOCK_API_KEY}&filter={filter_keys}"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            stock_details.append(response.json())
+
     return stock_details
 
 
@@ -49,55 +58,34 @@ def hello_world():
 
 @app.route('/suggestions', methods=['POST'])
 @cross_origin(origin='*')
-def return_data():
-    Strategies = request.json['Strategies']
-    Amount = request.json['Amount']
+def fetch_suggestions():
+    strategies = request.json.get("Strategies")
+    amount = request.json.get("Amount")
 
-    strategiesResponse = {}
-    amt1 = Amount * 0.5
-    amt2 = Amount * 0.30
-    amt3 = Amount * 0.20
-    responseAmount = []
+    strategies_response = {}
+    response_amount = [amount * 0.5, amount * 0.3, amount * 0.2]
+    piechart_response = []
 
-    responseAmount.append(amt1)
-    responseAmount.append(amt2)
-    responseAmount.append(amt3)
-
-    stock_result_pieChart = []
-    logger.info("Strategies: %s", Strategies)
-    for strategy in Strategies:
+    logger.info("Strategies: %s", strategies)
+    for strategy in strategies:
         logger.info("Strategy: %s", strategy)
-        if strategy == "Ethical Investing":
-            strategiesResponse["Ethical Investing"] = get_stock_quote(strategy_ethical_investing)
-            stock_result_pieChart.append({"title": strategy_ethical_investing[0], "value": amt1})
-            stock_result_pieChart.append({"title": strategy_ethical_investing[1], "value": amt2})
-            stock_result_pieChart.append({"title": strategy_ethical_investing[2], "value": amt3})
-        elif strategy == "Quality Investing":
-            strategiesResponse["Quality Investing"] = get_stock_quote(strategy_quality_investing)
-            stock_result_pieChart.append({"title": strategy_quality_investing[0], "value": amt1})
-            stock_result_pieChart.append({"title": strategy_quality_investing[1], "value": amt2})
-            stock_result_pieChart.append({"title": strategy_quality_investing[2], "value": amt3})
-        elif strategy == "Index Investing":
-            strategiesResponse["Index Investing"] = get_stock_quote(strategy_index_investing)
-            stock_result_pieChart.append({"title": strategy_index_investing[0], "value": amt1})
-            stock_result_pieChart.append({"title": strategy_index_investing[1], "value": amt2})
-            stock_result_pieChart.append({"title": strategy_index_investing[2], "value": amt3})
-        elif strategy == "Value Investing":
-            strategiesResponse["Value Investing"] = get_stock_quote(strategy_value_investing)
-            stock_result_pieChart.append({"title": strategy_value_investing[0], "value": amt1})
-            stock_result_pieChart.append({"title": strategy_value_investing[1], "value": amt2})
-            stock_result_pieChart.append({"title": strategy_value_investing[2], "value": amt3})
-        elif strategy == "Growth Investing":
-            strategiesResponse["Growth Investing"] = get_stock_quote(strategy_growth_investing)
-            stock_result_pieChart.append({"title": strategy_growth_investing[0], "value": amt1})
-            stock_result_pieChart.append({"title": strategy_growth_investing[1], "value": amt2})
-            stock_result_pieChart.append({"title": strategy_growth_investing[2], "value": amt3})
+        strategies_response[strategy] = get_stock_quote(investment_strategies[strategy])
+        for i, stock in enumerate(investment_strategies[strategy]):
+            piechart_response.append({"title": stock, "value": response_amount[i]})
 
-    response_details = {"strategiesResponse": strategiesResponse, "amountResponse": responseAmount,
-                        "piechartResponse": stock_result_pieChart}
+    response_details = {"strategiesResponse": strategies_response, "amountResponse": response_amount,
+                        "piechartResponse": piechart_response}
     response = Response(json.dumps(response_details), mimetype='application/json')
     logger.info("Response: %s", response)
     return response
+
+
+@app.route('/charts/<symbol>', methods=['GET'])
+@cross_origin(origin='*')
+def get_charts(symbol):
+    url_base = f"{STOCK_API_URL}/v1/stock/{symbol}/chart/1m?token={STOCK_API_KEY}"
+    response = requests.get(url_base)
+    return response.json()
 
 
 if __name__ == "__main__":
