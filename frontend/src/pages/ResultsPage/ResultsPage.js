@@ -18,7 +18,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Label,
+  Label, Cell,
 } from 'recharts';
 import {fetchCharts} from "../../api/api";
 
@@ -236,10 +236,14 @@ function ResultsPage() {
                     </text>
                   );
                 }}
-              />
+              >
+              {responseData.piechartResponse.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+              </Pie>
             </PieChart>
           ) : (
-            ''
+            <></>
           )}
         </Box>
       </Box>
